@@ -11,7 +11,7 @@ namespace MollysCare.Formularios
 {
 
 
-    public partial class Menu
+    public partial class MiPerfil
     {
 
         /// <summary>
@@ -24,84 +24,66 @@ namespace MollysCare.Formularios
         protected global::System.Web.UI.HtmlControls.HtmlForm form1;
 
         /// <summary>
-        /// pnlLogout control.
+        /// lblInfoRol control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Panel pnlLogout;
+        protected global::System.Web.UI.WebControls.Label lblInfoRol;
 
         /// <summary>
-        /// btnLogout control.
+        /// lblMensaje control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Button btnLogout;
+        protected global::System.Web.UI.WebControls.Label lblMensaje;
 
         /// <summary>
-        /// pnlLogin control.
+        /// txtNombre control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Panel pnlLogin;
+        protected global::System.Web.UI.WebControls.TextBox txtNombre;
 
         /// <summary>
-        /// pnlDashboard control.
+        /// lblCorreo control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Panel pnlDashboard;
+        protected global::System.Web.UI.WebControls.Label lblCorreo;
 
         /// <summary>
-        /// pnlMiPerfil control.
+        /// txtNuevaContrasena control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Panel pnlMiPerfil;
+        protected global::System.Web.UI.WebControls.TextBox txtNuevaContrasena;
 
         /// <summary>
-        /// pnlUsuariosAdmin control.
+        /// txtConfirmarContrasena control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Panel pnlUsuariosAdmin;
+        protected global::System.Web.UI.WebControls.TextBox txtConfirmarContrasena;
 
         /// <summary>
-        /// pnlClientesAdmin control.
+        /// btnGuardar control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Panel pnlClientesAdmin;
-
-        /// <summary>
-        /// pnlCarritoCliente control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Panel pnlCarritoCliente;
-
-        /// <summary>
-        /// pnlInformacion control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Panel pnlInformacion;
+        protected global::System.Web.UI.WebControls.Button btnGuardar;
     }
 }

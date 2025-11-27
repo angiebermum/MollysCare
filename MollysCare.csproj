@@ -165,7 +165,13 @@
     <Content Include="Default.aspx" />
     <Content Include="favicon.ico" />
     <Content Include="Formularios\ApiMascotasDemo.aspx" />
+    <Content Include="Formularios\ClientesAdmin.aspx" />
+    <Content Include="Formularios\MiPerfil.aspx" />
+    <Content Include="Formularios\HistorialPedidos.aspx" />
+    <Content Include="Formularios\PedidosAdmin.aspx" />
+    <Content Include="Formularios\Informacion.aspx" />
     <Content Include="Formularios\Inventarios.aspx" />
+    <Content Include="Formularios\Carrito.aspx" />
     <Content Include="Formularios\Productos.aspx" />
     <Content Include="Formularios\Registro.aspx" />
     <Content Include="Formularios\Login.aspx" />
@@ -264,12 +270,54 @@
     <Compile Include="Formularios\ApiMascotasDemo.aspx.designer.cs">
       <DependentUpon>ApiMascotasDemo.aspx</DependentUpon>
     </Compile>
+    <Compile Include="Formularios\ClientesAdmin.aspx.cs">
+      <DependentUpon>ClientesAdmin.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Formularios\ClientesAdmin.aspx.designer.cs">
+      <DependentUpon>ClientesAdmin.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Formularios\MiPerfil.aspx.cs">
+      <DependentUpon>MiPerfil.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Formularios\MiPerfil.aspx.designer.cs">
+      <DependentUpon>MiPerfil.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Formularios\HistorialPedidos.aspx.cs">
+      <DependentUpon>HistorialPedidos.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Formularios\HistorialPedidos.aspx.designer.cs">
+      <DependentUpon>HistorialPedidos.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Formularios\PedidosAdmin.aspx.cs">
+      <DependentUpon>PedidosAdmin.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Formularios\PedidosAdmin.aspx.designer.cs">
+      <DependentUpon>PedidosAdmin.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Formularios\Informacion.aspx.cs">
+      <DependentUpon>Informacion.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Formularios\Informacion.aspx.designer.cs">
+      <DependentUpon>Informacion.aspx</DependentUpon>
+    </Compile>
     <Compile Include="Formularios\Inventarios.aspx.cs">
       <DependentUpon>Inventarios.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Formularios\Inventarios.aspx.designer.cs">
       <DependentUpon>Inventarios.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Formularios\Carrito.aspx.cs">
+      <DependentUpon>Carrito.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Formularios\Carrito.aspx.designer.cs">
+      <DependentUpon>Carrito.aspx</DependentUpon>
     </Compile>
     <Compile Include="Formularios\Productos.aspx.cs">
       <DependentUpon>Productos.aspx</DependentUpon>

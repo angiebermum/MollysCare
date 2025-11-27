@@ -82,24 +82,24 @@
             <div class="card menu-card">
                 <div class="card-body p-4 p-md-5">
 
-                   
-                   <div class="d-flex align-items-center justify-content-between gap-3 mb-4">
-                       <div class="d-flex align-items-center gap-3">
-                           <img src='<%= ResolveUrl("~/images/logo.png") %>' alt="Molly's Care" style="max-width:150px; height:auto;">
-                           <div>
-                               <h1 class="h3 mb-1 brand-badge" style="font-size: 2rem;">Molly's Care</h1>
-                               <p class="mb-0">Inicio de sesión — ¡Todo en un solo lugar!</p>
-                           </div>
-                       </div>
-                       
-                       <asp:Panel ID="pnlLogout" runat="server">
-                           <asp:Button ID="btnLogout" runat="server"
-                               Text="Cerrar sesión"
-                               CssClass="btn btn-outline-secondary btn-sm"
-                               OnClick="btnLogout_Click" />
-                       </asp:Panel>
-                   </div>
-  
+              
+                    <div class="d-flex align-items-center justify-content-between gap-3 mb-4">
+                        <div class="d-flex align-items-center gap-3">
+                            <img src='<%= ResolveUrl("~/images/logo.png") %>' alt="Molly's Care" style="max-width:150px; height:auto;">
+                            <div>
+                                <h1 class="h3 mb-1 brand-badge" style="font-size: 2rem;">Molly's Care</h1>
+                                <p class="mb-0">Inicio de sesión — ¡Todo en un solo lugar!</p>
+                            </div>
+                        </div>
+
+                        <asp:Panel ID="pnlLogout" runat="server">
+                            <asp:Button ID="btnLogout" runat="server"
+                                Text="Cerrar sesión"
+                                CssClass="btn btn-outline-secondary btn-sm"
+                                OnClick="btnLogout_Click" />
+                        </asp:Panel>
+                    </div>
+
                     <asp:Panel ID="pnlLogin" runat="server">
                         <div class="row justify-content-center">
                             <div class="col-md-6">
@@ -120,41 +120,98 @@
                   
                     <asp:Panel ID="pnlDashboard" runat="server">
                         <div class="row row-cols-1 row-cols-sm-2 row-cols-lg-3 g-3">
-                      
+                        
                             <div class="col">
                                 <a class="menu-link" href="Productos.aspx" aria-label="Productos para mascotas">
                                     <div class="d-flex align-items-center gap-3">
                                         <div class="icon-wrap rose"><i class="bi bi-bag-heart"></i></div>
                                         <div class="flex-grow-1">
                                             <p class="menu-title">Productos</p>
-                                            <p class="menu-desc">Registrar y administrar productos para mascotas.</p>
+                                            <p class="menu-desc">Visualización de los productos disponibles.</p>
                                         </div>
                                         <i class="bi bi-chevron-right"></i>
                                     </div>
                                 </a>
                             </div>
 
-                          
+                           
                             <div class="col">
                                 <a class="menu-link" href="Inventarios.aspx" aria-label="Inventario">
                                     <div class="d-flex align-items-center gap-3">
                                         <div class="icon-wrap sky"><i class="bi bi-box-seam"></i></div>
                                         <div class="flex-grow-1">
                                             <p class="menu-title">Inventario</p>
-                                            <p class="menu-desc">Control de stock y productos bajo mínimo.</p>
+                                            <p class="menu-desc">Visualización del stock disponible.</p>
                                         </div>
                                         <i class="bi bi-chevron-right"></i>
                                     </div>
                                 </a>
                             </div>
-                         
+
+                            
+                            <asp:Panel ID="pnlMiPerfil" runat="server" CssClass="col">
+                                <a class="menu-link" href="MiPerfil.aspx" aria-label="Mi perfil">
+                                    <div class="d-flex align-items-center gap-3">
+                                        <div class="icon-wrap mint"><i class="bi bi-person-circle"></i></div>
+                                        <div class="flex-grow-1">
+                                            <p class="menu-title">Mi perfil</p>
+                                            <p class="menu-desc">Ver y actualizar mis datos de usuario.</p>
+                                        </div>
+                                        <i class="bi bi-chevron-right"></i>
+                                    </div>
+                                </a>
+                            </asp:Panel>
+
+                          
                             <asp:Panel ID="pnlUsuariosAdmin" runat="server" CssClass="col">
                                 <a class="menu-link" href="Registro.aspx" aria-label="Gestión de usuarios">
                                     <div class="d-flex align-items-center gap-3">
                                         <div class="icon-wrap lav"><i class="bi bi-people"></i></div>
                                         <div class="flex-grow-1">
                                             <p class="menu-title">Usuarios</p>
-                                            <p class="menu-desc">Registro y administración de usuarios (solo administrador).</p>
+                                            <p class="menu-desc">Registro y administración de usuarios.</p>
+                                        </div>
+                                        <i class="bi bi-chevron-right"></i>
+                                    </div>
+                                </a>
+                            </asp:Panel>
+
+                       
+                            <asp:Panel ID="pnlClientesAdmin" runat="server" CssClass="col">
+                                <a class="menu-link" href="ClientesAdmin.aspx" aria-label="Gestión de clientes">
+                                    <div class="d-flex align-items-center gap-3">
+                                        <div class="icon-wrap peach"><i class="bi bi-person-lines-fill"></i></div>
+                                        <div class="flex-grow-1">
+                                            <p class="menu-title">Clientes</p>
+                                            <p class="menu-desc">Listado de clientes y sus pedidos.</p>
+                                        </div>
+                                        <i class="bi bi-chevron-right"></i>
+                                    </div>
+                                </a>
+                            </asp:Panel>
+
+
+                            <asp:Panel ID="pnlCarritoCliente" runat="server" CssClass="col">
+                                <a class="menu-link" href="Carrito.aspx" aria-label="Mi carrito">
+                                    <div class="d-flex align-items-center gap-3">
+                                        <div class="icon-wrap peach"><i class="bi bi-cart-check"></i></div>
+                                        <div class="flex-grow-1">
+                                            <p class="menu-title">Mi carrito</p>
+                                            <p class="menu-desc">Ver productos seleccionados y monto a pagar.</p>
+                                        </div>
+                                        <i class="bi bi-chevron-right"></i>
+                                    </div>
+                                </a>
+                            </asp:Panel>
+
+                            
+                            <asp:Panel ID="pnlInformacion" runat="server" CssClass="col">
+                                <a class="menu-link" href="Informacion.aspx" aria-label="Información del negocio">
+                                    <div class="d-flex align-items-center gap-3">
+                                        <div class="icon-wrap mint"><i class="bi bi-info-circle"></i></div>
+                                        <div class="flex-grow-1">
+                                            <p class="menu-title">Información</p>
+                                            <p class="menu-desc">Quiénes somos, contacto y devoluciones.</p>
                                         </div>
                                         <i class="bi bi-chevron-right"></i>
                                     </div>

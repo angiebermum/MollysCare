@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Configuration;
 using System.Data;
 using System.Data.SqlClient;
@@ -9,7 +10,13 @@ namespace MollysCare.Formularios
 {
     public partial class Productos : Page
     {
+        // Cadena de conexión
         string cs = ConfigurationManager.ConnectionStrings["ConexionBD"].ConnectionString;
+
+        // Índices de columnas en el GridView
+        private const int COL_ACCIONES = 0;   // TemplateField Acciones
+        private const int COL_CARRITO = 1;    // TemplateField Carrito
+        private const int COL_PROVEEDOR = 7;  // 0 Acciones, 1 Carrito, 2 ID, 3 Nombre, 4 Categoría, 5 Marca, 6 Descripción, 7 Proveedor...
 
         protected void Page_Load(object sender, EventArgs e)
         {
@@ -20,26 +27,25 @@ namespace MollysCare.Formularios
                 return;
             }
 
-            string rol = (Session["Rol"] ?? "").ToString();
-            bool esAdmin = rol == "ADMIN";
-
-            lblRol.Text = "Rol actual: " + (esAdmin ? "Administrador (puede gestionar productos)" : "Cliente (solo lectura)");
-            pnlAdmin.Visible = esAdmin;   // solo admin ve el formulario de alta
-
             if (!IsPostBack)
             {
                 CargarProductos();
             }
-
-            // Aseguramos visibilidad de la columna de acciones según el rol
-            gvProductos.Columns[0].Visible = esAdmin; // CommandField
         }
 
         private void CargarProductos()
         {
             using (SqlConnection cn = new SqlConnection(cs))
             using (SqlCommand cmd = new SqlCommand(
-                @"SELECT IdProducto, Nombre, Categoria, Marca, Precio, StockActual, StockMinimo
+                @"SELECT IdProducto,
+                         Nombre,
+                         Categoria,
+                         Marca,
+                         Descripcion,
+                         Proveedor,
+                         Precio,
+                         StockActual,
+                         StockMinimo
                   FROM dbo.Productos
                   WHERE EsActivo = 1", cn))
             using (SqlDataAdapter da = new SqlDataAdapter(cmd))
@@ -50,12 +56,10 @@ namespace MollysCare.Formularios
                 gvProductos.DataBind();
             }
 
-            // Después de enlazar, ajustar visibilidad de columna de acciones según rol
-            bool esAdmin = (Session["Rol"] ?? "").ToString() == "ADMIN";
-            gvProductos.Columns[0].Visible = esAdmin;
+            // Ajustar columnas según rol
+            ConfigurarColumnasPorRol();
         }
 
-        // Alta de nuevo producto (solo admin)
         protected void btnGuardar_Click(object sender, EventArgs e)
         {
             string rol = (Session["Rol"] ?? "").ToString();
@@ -68,6 +72,8 @@ namespace MollysCare.Formularios
             string nombre = txtNombre.Text.Trim();
             string categoria = txtCategoria.Text.Trim();
             string marca = txtMarca.Text.Trim();
+            string descripcion = txtDescripcion != null ? txtDescripcion.Text.Trim() : null;
+            string proveedor = txtProveedor != null ? txtProveedor.Text.Trim() : null;
 
             if (!decimal.TryParse(txtPrecio.Text.Trim(), out decimal precio) ||
                 !int.TryParse(txtStockActual.Text.Trim(), out int stockActual) ||
@@ -88,16 +94,22 @@ namespace MollysCare.Formularios
                 using (SqlConnection cn = new SqlConnection(cs))
                 using (SqlCommand cmd = new SqlCommand(
                     @"INSERT INTO dbo.Productos
-                      (Nombre, Descripcion, Precio, StockActual, StockMinimo, Categoria, Marca, EsActivo)
-                      VALUES (@Nombre, @Descripcion, @Precio, @StockActual, @StockMinimo, @Categoria, @Marca, 1)", cn))
+                      (Nombre, Descripcion, Precio, StockActual, StockMinimo, Categoria, Marca, Proveedor, EsActivo)
+                      VALUES
+                      (@Nombre, @Descripcion, @Precio, @StockActual, @StockMinimo, @Categoria, @Marca, @Proveedor, 1)", cn))
                 {
                     cmd.Parameters.AddWithValue("@Nombre", nombre);
-                    cmd.Parameters.AddWithValue("@Descripcion", DBNull.Value);
+                    cmd.Parameters.AddWithValue("@Descripcion",
+                        string.IsNullOrWhiteSpace(descripcion) ? (object)DBNull.Value : descripcion);
                     cmd.Parameters.AddWithValue("@Precio", precio);
                     cmd.Parameters.AddWithValue("@StockActual", stockActual);
                     cmd.Parameters.AddWithValue("@StockMinimo", stockMinimo);
-                    cmd.Parameters.AddWithValue("@Categoria", (object)categoria ?? DBNull.Value);
-                    cmd.Parameters.AddWithValue("@Marca", (object)marca ?? DBNull.Value);
+                    cmd.Parameters.AddWithValue("@Categoria",
+                        string.IsNullOrWhiteSpace(categoria) ? (object)DBNull.Value : categoria);
+                    cmd.Parameters.AddWithValue("@Marca",
+                        string.IsNullOrWhiteSpace(marca) ? (object)DBNull.Value : marca);
+                    cmd.Parameters.AddWithValue("@Proveedor",
+                        string.IsNullOrWhiteSpace(proveedor) ? (object)DBNull.Value : proveedor);
 
                     cn.Open();
                     cmd.ExecuteNonQuery();
@@ -106,8 +118,11 @@ namespace MollysCare.Formularios
                 lblMensaje.CssClass = "text-success d-block mb-2";
                 lblMensaje.Text = "Producto registrado correctamente.";
 
+                // Limpiar campos
                 txtNombre.Text = txtCategoria.Text = txtMarca.Text = "";
                 txtPrecio.Text = txtStockActual.Text = txtStockMinimo.Text = "";
+                if (txtDescripcion != null) txtDescripcion.Text = "";
+                if (txtProveedor != null) txtProveedor.Text = "";
 
                 CargarProductos();
             }
@@ -118,7 +133,6 @@ namespace MollysCare.Formularios
             }
         }
 
-        // Poner fila en modo edición
         protected void gvProductos_RowEditing(object sender, GridViewEditEventArgs e)
         {
             string rol = (Session["Rol"] ?? "").ToString();
@@ -132,46 +146,73 @@ namespace MollysCare.Formularios
             CargarProductos();
         }
 
-        // Cancelar edición
         protected void gvProductos_RowCancelingEdit(object sender, GridViewCancelEditEventArgs e)
         {
             gvProductos.EditIndex = -1;
             CargarProductos();
         }
 
-        // Actualizar producto
         protected void gvProductos_RowUpdating(object sender, GridViewUpdateEventArgs e)
         {
             string rol = (Session["Rol"] ?? "").ToString();
             if (rol != "ADMIN")
             {
                 lblMensaje.Text = "No tiene permisos para actualizar productos.";
+                e.Cancel = true;
                 return;
             }
 
-            int idProducto = Convert.ToInt32(gvProductos.DataKeys[e.RowIndex].Value);
-            GridViewRow row = gvProductos.Rows[e.RowIndex];
+        
+            int idProducto = -1;
 
-            // Columnas: 0=acciones, 1=IdProducto, 2=Nombre, 3=Categoria, 4=Marca, 5=Precio, 6=StockActual, 7=StockMinimo
-            string nombre = ((TextBox)row.Cells[2].Controls[0]).Text.Trim();
-            string categoria = ((TextBox)row.Cells[3].Controls[0]).Text.Trim();
-            string marca = ((TextBox)row.Cells[4].Controls[0]).Text.Trim();
+      
+            if (gvProductos.DataKeys != null &&
+                gvProductos.DataKeys.Count > e.RowIndex &&
+                gvProductos.DataKeys[e.RowIndex].Value != null)
+            {
+                int.TryParse(gvProductos.DataKeys[e.RowIndex].Value.ToString(), out idProducto);
+            }
 
-            string precioTexto = ((TextBox)row.Cells[5].Controls[0]).Text.Trim();
-            string stockActualTexto = ((TextBox)row.Cells[6].Controls[0]).Text.Trim();
-            string stockMinimoTexto = ((TextBox)row.Cells[7].Controls[0]).Text.Trim();
+            // Fallback: leer desde la columna ID (columna 2)
+            if (idProducto <= 0)
+            {
+                GridViewRow rowKey = gvProductos.Rows[e.RowIndex];
+                int.TryParse(rowKey.Cells[2].Text, out idProducto);
+            }
+
+            if (idProducto <= 0)
+            {
+                lblMensaje.Text = "No se pudo identificar el producto a actualizar.";
+                e.Cancel = true;
+                return;
+            }
+
+            // =======================
+            // 2) LEER VALORES NUEVOS
+            // =======================
+            string nombre = (e.NewValues["Nombre"] ?? "").ToString().Trim();
+            string categoria = (e.NewValues["Categoria"] ?? "").ToString().Trim();
+            string marca = (e.NewValues["Marca"] ?? "").ToString().Trim();
+            string descripcion = (e.NewValues["Descripcion"] ?? "").ToString().Trim();
+            string proveedor = (e.NewValues["Proveedor"] ?? "").ToString().Trim();
+
+            string precioTexto = (e.NewValues["Precio"] ?? "").ToString();
+            string stockActualTexto = (e.NewValues["StockActual"] ?? "").ToString();
+            string stockMinimoTexto = (e.NewValues["StockMinimo"] ?? "").ToString();
 
             if (!decimal.TryParse(precioTexto, out decimal precio) ||
                 !int.TryParse(stockActualTexto, out int stockActual) ||
                 !int.TryParse(stockMinimoTexto, out int stockMinimo))
             {
                 lblMensaje.Text = "Verifique precio y cantidades al actualizar.";
+                e.Cancel = true;
                 return;
             }
 
-            if (string.IsNullOrEmpty(nombre))
+            if (string.IsNullOrWhiteSpace(nombre))
             {
                 lblMensaje.Text = "El nombre del producto es obligatorio.";
+                e.Cancel = true;
                 return;
             }
 
@@ -180,18 +221,26 @@ namespace MollysCare.Formularios
                 using (SqlConnection cn = new SqlConnection(cs))
                 using (SqlCommand cmd = new SqlCommand(
                     @"UPDATE dbo.Productos
-                      SET Nombre = @Nombre,
-                          Categoria = @Categoria,
-                          Marca = @Marca,
-                          Precio = @Precio,
+                      SET Nombre      = @Nombre,
+                          Categoria   = @Categoria,
+                          Marca       = @Marca,
+                          Descripcion = @Descripcion,
+                          Proveedor   = @Proveedor,
+                          Precio      = @Precio,
                           StockActual = @StockActual,
                           StockMinimo = @StockMinimo
                       WHERE IdProducto = @IdProducto", cn))
                 {
                     cmd.Parameters.AddWithValue("@IdProducto", idProducto);
                     cmd.Parameters.AddWithValue("@Nombre", nombre);
-                    cmd.Parameters.AddWithValue("@Categoria", (object)categoria ?? DBNull.Value);
-                    cmd.Parameters.AddWithValue("@Marca", (object)marca ?? DBNull.Value);
+                    cmd.Parameters.AddWithValue("@Categoria",
+                        string.IsNullOrWhiteSpace(categoria) ? (object)DBNull.Value : categoria);
+                    cmd.Parameters.AddWithValue("@Marca",
+                        string.IsNullOrWhiteSpace(marca) ? (object)DBNull.Value : marca);
+                    cmd.Parameters.AddWithValue("@Descripcion",
+                        string.IsNullOrWhiteSpace(descripcion) ? (object)DBNull.Value : descripcion);
+                    cmd.Parameters.AddWithValue("@Proveedor",
+                        string.IsNullOrWhiteSpace(proveedor) ? (object)DBNull.Value : proveedor);
                     cmd.Parameters.AddWithValue("@Precio", precio);
                     cmd.Parameters.AddWithValue("@StockActual", stockActual);
                     cmd.Parameters.AddWithValue("@StockMinimo", stockMinimo);
@@ -203,16 +252,18 @@ namespace MollysCare.Formularios
                 gvProductos.EditIndex = -1;
                 lblMensaje.CssClass = "text-success d-block mb-2";
                 lblMensaje.Text = "Producto actualizado correctamente.";
+
+                e.Cancel = true;   // evitamos que el Grid haga un rebind automático
                 CargarProductos();
             }
             catch (Exception ex)
             {
                 lblMensaje.CssClass = "text-danger d-block mb-2";
                 lblMensaje.Text = "Error al actualizar: " + ex.Message;
+                e.Cancel = true;
             }
         }
 
-        // Eliminar producto (baja lógica: EsActivo = 0)
         protected void gvProductos_RowDeleting(object sender, GridViewDeleteEventArgs e)
         {
             string rol = (Session["Rol"] ?? "").ToString();
@@ -222,7 +273,20 @@ namespace MollysCare.Formularios
                 return;
             }
 
-            int idProducto = Convert.ToInt32(gvProductos.DataKeys[e.RowIndex].Value);
+            int idProducto = -1;
+
+            if (gvProductos.DataKeys != null &&
+                gvProductos.DataKeys.Count > e.RowIndex &&
+                gvProductos.DataKeys[e.RowIndex].Value != null)
+            {
+                int.TryParse(gvProductos.DataKeys[e.RowIndex].Value.ToString(), out idProducto);
+            }
+
+            if (idProducto <= 0)
+            {
+                lblMensaje.Text = "No se pudo identificar el producto a eliminar.";
+                return;
+            }
 
             try
             {
@@ -246,6 +310,53 @@ namespace MollysCare.Formularios
                 lblMensaje.CssClass = "text-danger d-block mb-2";
                 lblMensaje.Text = "Error al eliminar: " + ex.Message;
             }
+        }
+
+        protected void gvProductos_RowCommand(object sender, GridViewCommandEventArgs e)
+        {
+            if (e.CommandName == "AgregarCarrito")
+            {
+                // Solo clientes pueden usar el carrito
+                string rol = (Session["Rol"] ?? "").ToString().ToUpperInvariant();
+                if (rol != "CLIENTE") return;
+
+                if (int.TryParse(e.CommandArgument.ToString(), out int idProducto))
+                {
+                    var carrito = Session["Carrito"] as List<int>;
+                    if (carrito == null)
+                    {
+                        carrito = new List<int>();
+                    }
+
+                    carrito.Add(idProducto);
+                    Session["Carrito"] = carrito;
+
+                    lblCarritoMensaje.Text = "Producto añadido al carrito.";
+                }
+            }
+        }
+
+        private void ConfigurarColumnasPorRol()
+        {
+            string rol = (Session["Rol"] ?? "").ToString().ToUpperInvariant();
+            bool esAdmin = (rol == "ADMIN");
+            bool esCliente = (rol == "CLIENTE");
+
+            // Panel de alta de productos
+            pnlAdmin.Visible = esAdmin;
+
+            // Acciones solo para admin
+            gvProductos.Columns[COL_ACCIONES].Visible = esAdmin;
+
+            // Carrito solo para cliente
+            gvProductos.Columns[COL_CARRITO].Visible = esCliente;
+
+            // Proveedor solo para admin
+            gvProductos.Columns[COL_PROVEEDOR].Visible = esAdmin;
+
+            lblRol.Text = esAdmin
+                ? "Rol actual: Administrador (puede gestionar productos)."
+                : "Rol actual: Cliente (solo lectura, puede añadir al carrito).";
         }
     }
 }

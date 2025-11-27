@@ -11,25 +11,35 @@ namespace MollysCare.Formularios
 
             pnlDashboard.Visible = estaLogueado;
             pnlLogin.Visible = !estaLogueado;
-
-           
             pnlLogout.Visible = estaLogueado;
 
-            if (estaLogueado)
+            if (!estaLogueado)
             {
-                string rol = (Session["Rol"] ?? "").ToString();
                 
-                pnlUsuariosAdmin.Visible = (rol == "ADMIN");
-            }
-            else
-            {
                 pnlUsuariosAdmin.Visible = false;
+                pnlClientesAdmin.Visible = false;
+                pnlCarritoCliente.Visible = false;
+                pnlMiPerfil.Visible = false;
+                pnlInformacion.Visible = false;
+                return;
             }
+
+            string rol = (Session["Rol"] ?? "").ToString().ToUpperInvariant();
+            bool esAdmin = rol == "ADMIN";
+            bool esCliente = rol == "CLIENTE";
+
+            
+            pnlUsuariosAdmin.Visible = esAdmin;
+            pnlClientesAdmin.Visible = esAdmin;
+
+            pnlCarritoCliente.Visible = esCliente;
+
+            pnlMiPerfil.Visible = true;
+            pnlInformacion.Visible = true;
         }
 
         protected void btnLogout_Click(object sender, EventArgs e)
         {
-           
             Session.Clear();
             Session.Abandon();
             Response.Redirect("Menu.aspx");
