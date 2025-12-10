@@ -15,9 +15,10 @@ namespace MollysCare.Formularios
 
             if (!estaLogueado)
             {
-                
                 pnlUsuariosAdmin.Visible = false;
                 pnlClientesAdmin.Visible = false;
+                pnlReportesAdmin.Visible = false;
+                pnlAjaxDemoAdmin.Visible = false;
                 pnlCarritoCliente.Visible = false;
                 pnlMiPerfil.Visible = false;
                 pnlInformacion.Visible = false;
@@ -28,9 +29,10 @@ namespace MollysCare.Formularios
             bool esAdmin = rol == "ADMIN";
             bool esCliente = rol == "CLIENTE";
 
-            
             pnlUsuariosAdmin.Visible = esAdmin;
             pnlClientesAdmin.Visible = esAdmin;
+            pnlReportesAdmin.Visible = esAdmin;
+            pnlAjaxDemoAdmin.Visible = esAdmin;
 
             pnlCarritoCliente.Visible = esCliente;
 

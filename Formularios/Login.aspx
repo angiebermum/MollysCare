@@ -43,7 +43,8 @@
     </style>
 </head>
 <body>
-    <form id="form1" runat="server">
+
+    <form id="form1" runat="server" onsubmit="return validarLogin();">
         <div class="login-card">
             <div class="text-center mb-3">
                 <img src='<%= ResolveUrl("~/images/logo.png") %>' alt="Molly's" style="max-width:120px; height:auto;">
@@ -80,5 +81,36 @@
     </form>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script type="text/javascript">
+        function validarLogin() {
+            var txtCorreo = document.getElementById('<%= txtCorreo.ClientID %>');
+            var txtContrasena = document.getElementById('<%= txtContrasena.ClientID %>');
+            var lbl = document.getElementById('<%= lblMensaje.ClientID %>');
+
+            var correo = txtCorreo.value.trim();
+            var contrasena = txtContrasena.value.trim();
+
+            lbl.innerText = '';
+
+            if (!correo || !contrasena) {
+                lbl.innerText = 'Debe ingresar correo y contraseña.';
+                txtCorreo.focus();
+                return false; 
+            }
+
+           
+            var regexCorreo = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (!regexCorreo.test(correo)) {
+                lbl.innerText = 'Ingrese un correo electrónico válido.';
+                txtCorreo.focus();
+                return false;
+            }
+
+           
+            return true;
+        }
+    </script>
 </body>
 </html>
+

@@ -95,6 +95,7 @@
             </div>
         </div>
 
+        
         <asp:GridView ID="gvProductos" runat="server"
             CssClass="table table-striped table-bordered table-sm"
             AutoGenerateColumns="False"
@@ -106,7 +107,7 @@
             OnRowCommand="gvProductos_RowCommand">
 
             <Columns>
-             
+         
                 <asp:TemplateField HeaderText="Acciones">
                     <ItemTemplate>
                         <asp:LinkButton ID="lnkEditar" runat="server"
@@ -132,7 +133,7 @@
                     </EditItemTemplate>
                 </asp:TemplateField>
 
-          
+              
                 <asp:TemplateField HeaderText="Carrito">
                     <ItemTemplate>
                         <asp:Button ID="btnAgregarCarrito" runat="server"
@@ -143,7 +144,6 @@
                     </ItemTemplate>
                 </asp:TemplateField>
 
-            
                 <asp:BoundField DataField="IdProducto" HeaderText="ID" ReadOnly="True" />
                 <asp:BoundField DataField="Nombre" HeaderText="Nombre" />
                 <asp:BoundField DataField="Categoria" HeaderText="Categoría" />
@@ -157,7 +157,7 @@
             </Columns>
         </asp:GridView>
 
-      
+       
         <asp:Panel ID="pnlAdmin" runat="server">
             <hr class="my-4" />
             <h2 class="h5 mb-3">Registrar nuevo producto (solo administrador)</h2>
@@ -216,12 +216,31 @@
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 
+   
     <script type="text/javascript">
         function normalizarPrecio(texto) {
             if (!texto) return NaN;
-            var limpio = texto.replace(/₡/g, '').replace(/,/g, '').trim();
+
+            var limpio = texto
+                .replace(/[^\d.,-]/g, '')
+                .replace(/\./g, '')
+                .replace(',', '.');
+
             var valor = parseFloat(limpio);
             return isNaN(valor) ? NaN : valor;
+        }
+
+        function obtenerIndiceColumnaPorTitulo(grid, tituloBuscado) {
+            var ths = grid.getElementsByTagName('th');
+            tituloBuscado = tituloBuscado.toLowerCase();
+
+            for (var i = 0; i < ths.length; i++) {
+                var texto = ths[i].innerText.toLowerCase();
+                if (texto.indexOf(tituloBuscado) !== -1) {
+                    return i;
+                }
+            }
+            return -1;
         }
 
         function aplicarFiltros() {
@@ -236,16 +255,24 @@
             var grid = document.getElementById('<%= gvProductos.ClientID %>');
             if (!grid) return;
 
+            var idxNombre = obtenerIndiceColumnaPorTitulo(grid, 'nombre');
+            var idxCategoria = obtenerIndiceColumnaPorTitulo(grid, 'categoría');
+            var idxPrecio = obtenerIndiceColumnaPorTitulo(grid, 'precio');
+
+            if (idxNombre === -1 || idxCategoria === -1 || idxPrecio === -1) {
+                console.warn('No se pudieron encontrar las columnas de filtro');
+                return;
+            }
+
             var rows = grid.getElementsByTagName('tr');
 
-         
             for (var i = 1; i < rows.length; i++) {
                 var cells = rows[i].getElementsByTagName('td');
                 if (cells.length === 0) continue;
 
-                var nombreCell = cells[3].innerText.toLowerCase();
-                var categoriaCell = cells[4].innerText.toLowerCase();
-                var precioCell = cells[8].innerText;
+                var nombreCell = cells[idxNombre].innerText.toLowerCase();
+                var categoriaCell = cells[idxCategoria].innerText.toLowerCase();
+                var precioCell = cells[idxPrecio].innerText;
                 var precioValor = normalizarPrecio(precioCell);
 
                 var visible = true;
@@ -267,6 +294,5 @@
             aplicarFiltros();
         }
     </script>
-
 </body>
 </html>

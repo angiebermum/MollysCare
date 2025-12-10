@@ -1,11 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Configuration;
-using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
 using System.Web.UI;
-using System.Web.UI.WebControls;
 
 namespace MollysCare.Formularios
 {
@@ -47,7 +45,7 @@ namespace MollysCare.Formularios
             if (listaIds == null || listaIds.Count == 0)
                 return items;
 
-            
+            // Contamos cuántas veces aparece cada producto
             var cantidades = listaIds
                 .GroupBy(id => id)
                 .Select(g => new { IdProducto = g.Key, Cantidad = g.Count() })
@@ -110,36 +108,39 @@ namespace MollysCare.Formularios
                 lblMensaje.CssClass = "text-muted d-block mb-3";
                 lblMensaje.Text = "No hay productos en el carrito.";
                 lblTotal.Text = "₡0.00";
+                Session["TotalCarrito"] = null;
             }
             else
             {
                 lblMensaje.CssClass = "text-success d-block mb-3";
                 lblMensaje.Text = "";
                 lblTotal.Text = string.Format("₡{0:N2}", total);
+                // Dejamos el total disponible para Pago.aspx
+                Session["TotalCarrito"] = total;
             }
 
             bool hayItems = (items.Count > 0);
             bool esCliente = (Session["Rol"] ?? "").ToString()
                                 .ToUpperInvariant() == "CLIENTE";
 
-           
+            // Botones visibles solo cuando hay items
             btnVaciar.Visible = hayItems;
             btnConfirmarPedido.Visible = hayItems && esCliente;
+            btnIrAPago.Visible = hayItems && esCliente;
         }
 
-      
         protected void btnVaciar_Click(object sender, EventArgs e)
         {
             Session["Carrito"] = null;
+            Session["TotalCarrito"] = null;
+
             lblMensaje.CssClass = "text-success d-block mb-3";
             lblMensaje.Text = "Carrito vaciado correctamente.";
             CargarCarrito();
         }
 
-       
         protected void btnConfirmarPedido_Click(object sender, EventArgs e)
         {
-            
             string rol = (Session["Rol"] ?? "").ToString().ToUpperInvariant();
             if (rol != "CLIENTE")
             {
@@ -173,7 +174,6 @@ namespace MollysCare.Formularios
 
                 try
                 {
-                    
                     int idPedido;
                     using (SqlCommand cmdPedido = new SqlCommand(
                         @"INSERT INTO dbo.Pedidos (Usuario, Total, Estado)
@@ -188,7 +188,6 @@ namespace MollysCare.Formularios
                         idPedido = Convert.ToInt32(result);
                     }
 
-                   
                     foreach (var item in items)
                     {
                         using (SqlCommand cmdDet = new SqlCommand(
@@ -207,11 +206,11 @@ namespace MollysCare.Formularios
                         }
                     }
 
-
                     tran.Commit();
 
-            
                     Session["Carrito"] = null;
+                    Session["TotalCarrito"] = null;
+
                     lblMensaje.CssClass = "text-success d-block mb-3";
                     lblMensaje.Text = "Pedido registrado correctamente. Estado inicial: En proceso.";
                     CargarCarrito();
@@ -223,6 +222,32 @@ namespace MollysCare.Formularios
                     lblMensaje.Text = "Error al registrar el pedido: " + ex.Message;
                 }
             }
+        }
+
+        protected void btnIrAPago_Click(object sender, EventArgs e)
+        {
+            string rol = (Session["Rol"] ?? "").ToString().ToUpperInvariant();
+            if (rol != "CLIENTE")
+            {
+                lblMensaje.CssClass = "text-danger d-block mb-3";
+                lblMensaje.Text = "Solo los clientes pueden realizar pagos.";
+                return;
+            }
+
+            decimal total;
+            var items = ObtenerItemsCarrito(out total);
+
+            if (items.Count == 0)
+            {
+                lblMensaje.CssClass = "text-danger d-block mb-3";
+                lblMensaje.Text = "No hay productos en el carrito.";
+                return;
+            }
+
+            // Guardamos el total para que Pago.aspx lo use
+            Session["TotalCarrito"] = total;
+
+            Response.Redirect("Pago.aspx");
         }
     }
 }

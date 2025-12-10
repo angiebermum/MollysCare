@@ -13,9 +13,13 @@ namespace MollysCare.Formularios
 
         protected void btnIngresar_Click(object sender, EventArgs e)
         {
+            
+            if (!Page.IsValid)
+                return;
+
             string correo = txtCorreo.Text.Trim();
-            string contrasena = txtContrasena.Text.Trim();
-            string rol = ddlRol.SelectedValue;
+            string contrasena = txtContrasena.Text; 
+            string rolSeleccionado = ddlRol.SelectedValue;
 
             if (string.IsNullOrEmpty(correo) || string.IsNullOrEmpty(contrasena))
             {
@@ -29,26 +33,28 @@ namespace MollysCare.Formularios
             using (SqlCommand cmd = new SqlCommand(
                 @"SELECT IdUsuario, Nombre, Rol
                   FROM Usuarios
-                  WHERE Correo = @Correo AND Contrasena = @Contrasena AND Rol = @Rol", cn))
+                  WHERE Correo = @Correo
+                    AND Contrasena = @Contrasena
+                    AND Rol = @Rol", cn))
             {
+               
                 cmd.Parameters.AddWithValue("@Correo", correo);
                 cmd.Parameters.AddWithValue("@Contrasena", contrasena);
-                cmd.Parameters.AddWithValue("@Rol", rol);
+                cmd.Parameters.AddWithValue("@Rol", rolSeleccionado);
 
                 cn.Open();
                 using (SqlDataReader dr = cmd.ExecuteReader())
                 {
                     if (dr.Read())
                     {
-                        int idUsuario = dr.GetInt32(0);
-                        string nombre = dr.GetString(1);
-                        string rolDb = dr.GetString(2);
+                        int idUsuario = dr.GetInt32(dr.GetOrdinal("IdUsuario"));
+                        string nombre = dr["Nombre"].ToString();
+                        string rolDb = dr["Rol"].ToString();
 
-                        // Guardamos info básica en sesión
                         Session["UsuarioId"] = idUsuario;
                         Session["UsuarioNombre"] = nombre;
                         Session["Rol"] = rolDb;
-                        Session["Usuario"] = correo; // para el check del menú
+                        Session["Usuario"] = correo;
 
                         Response.Redirect("Menu.aspx");
                     }

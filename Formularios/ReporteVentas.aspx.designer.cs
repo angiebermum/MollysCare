@@ -11,7 +11,7 @@ namespace MollysCare.Formularios
 {
 
 
-    public partial class Menu
+    public partial class ReporteVentas
     {
 
         /// <summary>
@@ -24,111 +24,138 @@ namespace MollysCare.Formularios
         protected global::System.Web.UI.HtmlControls.HtmlForm form1;
 
         /// <summary>
-        /// pnlLogout control.
+        /// lblError control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Panel pnlLogout;
+        protected global::System.Web.UI.WebControls.Label lblError;
 
         /// <summary>
-        /// btnLogout control.
+        /// ddlModo control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Button btnLogout;
+        protected global::System.Web.UI.WebControls.DropDownList ddlModo;
 
         /// <summary>
-        /// pnlLogin control.
+        /// txtDesde control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Panel pnlLogin;
+        protected global::System.Web.UI.WebControls.TextBox txtDesde;
 
         /// <summary>
-        /// pnlDashboard control.
+        /// txtHasta control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Panel pnlDashboard;
+        protected global::System.Web.UI.WebControls.TextBox txtHasta;
 
         /// <summary>
-        /// pnlMiPerfil control.
+        /// btnGenerar control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Panel pnlMiPerfil;
+        protected global::System.Web.UI.WebControls.Button btnGenerar;
 
         /// <summary>
-        /// pnlUsuariosAdmin control.
+        /// gvVentasPeriodo control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Panel pnlUsuariosAdmin;
+        protected global::System.Web.UI.WebControls.GridView gvVentasPeriodo;
 
         /// <summary>
-        /// pnlClientesAdmin control.
+        /// gvProductos control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Panel pnlClientesAdmin;
+        protected global::System.Web.UI.WebControls.GridView gvProductos;
 
         /// <summary>
-        /// pnlReportesAdmin control.
+        /// gvClientes control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Panel pnlReportesAdmin;
+        protected global::System.Web.UI.WebControls.GridView gvClientes;
 
         /// <summary>
-        /// pnlEnviosAdmin control.
+        /// hfVentasPeriodos control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Panel pnlEnviosAdmin;
+        protected global::System.Web.UI.WebControls.HiddenField hfVentasPeriodos;
 
         /// <summary>
-        /// pnlAjaxDemoAdmin control.
+        /// hfVentasMontos control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Panel pnlAjaxDemoAdmin;
+        protected global::System.Web.UI.WebControls.HiddenField hfVentasMontos;
 
         /// <summary>
-        /// pnlCarritoCliente control.
+        /// hfGananciasMontos control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Panel pnlCarritoCliente;
+        protected global::System.Web.UI.WebControls.HiddenField hfGananciasMontos;
 
         /// <summary>
-        /// pnlInformacion control.
+        /// hfProductosNombres control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Panel pnlInformacion;
+        protected global::System.Web.UI.WebControls.HiddenField hfProductosNombres;
+
+        /// <summary>
+        /// hfProductosCantidades control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.HiddenField hfProductosCantidades;
+
+        /// <summary>
+        /// hfClientesNombres control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.HiddenField hfClientesNombres;
+
+        /// <summary>
+        /// hfClientesPedidos control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.HiddenField hfClientesPedidos;
     }
 }

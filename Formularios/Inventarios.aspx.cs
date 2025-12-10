@@ -13,7 +13,7 @@ namespace MollysCare.Formularios
 
         protected void Page_Load(object sender, EventArgs e)
         {
-            // Debe estar logueado
+           
             if (Session["Usuario"] == null)
             {
                 Response.Redirect("Login.aspx");

@@ -11,7 +11,7 @@ namespace MollysCare.Formularios
 {
 
 
-    public partial class Carrito
+    public partial class Pago
     {
 
         /// <summary>
@@ -33,48 +33,57 @@ namespace MollysCare.Formularios
         protected global::System.Web.UI.WebControls.Label lblMensaje;
 
         /// <summary>
-        /// gvCarrito control.
+        /// txtMonto control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.GridView gvCarrito;
+        protected global::System.Web.UI.WebControls.TextBox txtMonto;
 
         /// <summary>
-        /// lblTotal control.
+        /// lblDetalleMonto control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lblTotal;
+        protected global::System.Web.UI.WebControls.Label lblDetalleMonto;
 
         /// <summary>
-        /// btnVaciar control.
+        /// ddlMetodo control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Button btnVaciar;
+        protected global::System.Web.UI.WebControls.DropDownList ddlMetodo;
 
         /// <summary>
-        /// btnIrAPago control.
+        /// txtCorreo control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Button btnIrAPago;
+        protected global::System.Web.UI.WebControls.TextBox txtCorreo;
 
         /// <summary>
-        /// btnConfirmarPedido control.
+        /// txtDescripcion control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Button btnConfirmarPedido;
+        protected global::System.Web.UI.WebControls.TextBox txtDescripcion;
+
+        /// <summary>
+        /// btnPagar control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button btnPagar;
     }
 }

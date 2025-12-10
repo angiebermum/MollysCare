@@ -164,7 +164,10 @@
     <Content Include="Content\Site.css" />
     <Content Include="Default.aspx" />
     <Content Include="favicon.ico" />
-    <Content Include="Formularios\ApiMascotasDemo.aspx" />
+    <Content Include="Formularios\AjaxDemo.aspx" />
+    <Content Include="Formularios\SeguimientoEnvios.aspx" />
+    <Content Include="Formularios\Pago.aspx" />
+    <Content Include="Formularios\ReporteVentas.aspx" />
     <Content Include="Formularios\ClientesAdmin.aspx" />
     <Content Include="Formularios\MiPerfil.aspx" />
     <Content Include="Formularios\HistorialPedidos.aspx" />
@@ -256,6 +259,11 @@
     <Compile Include="Contact.aspx.designer.cs">
       <DependentUpon>Contact.aspx</DependentUpon>
     </Compile>
+    <Compile Include="Controladores\EnviosController.cs" />
+    <Compile Include="Controladores\PagoController.cs" />
+    <Compile Include="Controladores\ReportesVentasController.cs" />
+    <Compile Include="Data\EnviosRepository.cs" />
+    <Compile Include="Data\ReportesVentasRepository.cs" />
     <Compile Include="Default.aspx.cs">
       <DependentUpon>Default.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -263,12 +271,33 @@
     <Compile Include="Default.aspx.designer.cs">
       <DependentUpon>Default.aspx</DependentUpon>
     </Compile>
-    <Compile Include="Formularios\ApiMascotasDemo.aspx.cs">
-      <DependentUpon>ApiMascotasDemo.aspx</DependentUpon>
+    <Compile Include="Formularios\AjaxDemo.aspx.cs">
+      <DependentUpon>AjaxDemo.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="Formularios\ApiMascotasDemo.aspx.designer.cs">
-      <DependentUpon>ApiMascotasDemo.aspx</DependentUpon>
+    <Compile Include="Formularios\AjaxDemo.aspx.designer.cs">
+      <DependentUpon>AjaxDemo.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Formularios\SeguimientoEnvios.aspx.cs">
+      <DependentUpon>SeguimientoEnvios.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Formularios\SeguimientoEnvios.aspx.designer.cs">
+      <DependentUpon>SeguimientoEnvios.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Formularios\Pago.aspx.cs">
+      <DependentUpon>Pago.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Formularios\Pago.aspx.designer.cs">
+      <DependentUpon>Pago.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Formularios\ReporteVentas.aspx.cs">
+      <DependentUpon>ReporteVentas.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Formularios\ReporteVentas.aspx.designer.cs">
+      <DependentUpon>ReporteVentas.aspx</DependentUpon>
     </Compile>
     <Compile Include="Formularios\ClientesAdmin.aspx.cs">
       <DependentUpon>ClientesAdmin.aspx</DependentUpon>
@@ -350,7 +379,19 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Modelos\Envios\EnviosViewModel.cs" />
+    <Compile Include="Modelos\Envios\EnvioStatusDto.cs" />
+    <Compile Include="Modelos\Envios\PedidoEnvioDto.cs" />
+    <Compile Include="Modelos\Pagos\PagoViewModel.cs" />
+    <Compile Include="Modelos\Pagos\PagoResultadoDto.cs" />
+    <Compile Include="Modelos\Pagos\PagoRequestDto.cs" />
+    <Compile Include="Modelos\Reportes\ReporteVentasViewModel.cs" />
+    <Compile Include="Modelos\Reportes\ProductoMasVendidoDto.cs" />
+    <Compile Include="Modelos\Reportes\ClienteFrecuenteDto.cs" />
+    <Compile Include="Modelos\Reportes\VentaPeriodoDto.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Servicios\ProveedorEnviosService.cs" />
+    <Compile Include="Servicios\PasarelaPagoService.cs" />
     <Compile Include="Site.Master.cs">
       <DependentUpon>Site.Master</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>

@@ -82,7 +82,6 @@
             <div class="card menu-card">
                 <div class="card-body p-4 p-md-5">
 
-              
                     <div class="d-flex align-items-center justify-content-between gap-3 mb-4">
                         <div class="d-flex align-items-center gap-3">
                             <img src='<%= ResolveUrl("~/images/logo.png") %>' alt="Molly's Care" style="max-width:150px; height:auto;">
@@ -117,10 +116,10 @@
                         </div>
                     </asp:Panel>
 
-                  
                     <asp:Panel ID="pnlDashboard" runat="server">
                         <div class="row row-cols-1 row-cols-sm-2 row-cols-lg-3 g-3">
-                        
+                            
+                         
                             <div class="col">
                                 <a class="menu-link" href="Productos.aspx" aria-label="Productos para mascotas">
                                     <div class="d-flex align-items-center gap-3">
@@ -134,7 +133,7 @@
                                 </a>
                             </div>
 
-                           
+                         
                             <div class="col">
                                 <a class="menu-link" href="Inventarios.aspx" aria-label="Inventario">
                                     <div class="d-flex align-items-center gap-3">
@@ -162,7 +161,6 @@
                                 </a>
                             </asp:Panel>
 
-                          
                             <asp:Panel ID="pnlUsuariosAdmin" runat="server" CssClass="col">
                                 <a class="menu-link" href="Registro.aspx" aria-label="Gestión de usuarios">
                                     <div class="d-flex align-items-center gap-3">
@@ -176,7 +174,7 @@
                                 </a>
                             </asp:Panel>
 
-                       
+                         
                             <asp:Panel ID="pnlClientesAdmin" runat="server" CssClass="col">
                                 <a class="menu-link" href="ClientesAdmin.aspx" aria-label="Gestión de clientes">
                                     <div class="d-flex align-items-center gap-3">
@@ -190,7 +188,48 @@
                                 </a>
                             </asp:Panel>
 
+                           
+                            <asp:Panel ID="pnlReportesAdmin" runat="server" CssClass="col">
+                                <a class="menu-link" href="ReporteVentas.aspx" aria-label="Reportes de ventas">
+                                    <div class="d-flex align-items-center gap-3">
+                                        <div class="icon-wrap sky"><i class="bi bi-graph-up-arrow"></i></div>
+                                        <div class="flex-grow-1">
+                                            <p class="menu-title">Reportes</p>
+                                            <p class="menu-desc">Informes de ventas, productos y clientes.</p>
+                                        </div>
+                                        <i class="bi bi-chevron-right"></i>
+                                    </div>
+                                </a>
+                            </asp:Panel>
 
+                        
+                            <asp:Panel ID="pnlEnviosAdmin" runat="server" CssClass="col">
+                                <a class="menu-link" href="SeguimientoEnvios.aspx" aria-label="Gestión de envíos">
+                                    <div class="d-flex align-items-center gap-3">
+                                        <div class="icon-wrap sky"><i class="bi bi-truck"></i></div>
+                                        <div class="flex-grow-1">
+                                            <p class="menu-title">Envíos</p>
+                                            <p class="menu-desc">Seguimiento y actualización de pedidos.</p>
+                                        </div>
+                                        <i class="bi bi-chevron-right"></i>
+                                    </div>
+                                </a>
+                            </asp:Panel>
+
+                            <asp:Panel ID="pnlAjaxDemoAdmin" runat="server" CssClass="col">
+                                <a class="menu-link" href="AjaxDemo.aspx" aria-label="Demo AJAX">
+                                    <div class="d-flex align-items-center gap-3">
+                                        <div class="icon-wrap mint"><i class="bi bi-lightning-charge"></i></div>
+                                        <div class="flex-grow-1">
+                                            <p class="menu-title">Demo AJAX</p>
+                                            <p class="menu-desc">Ejemplo de actualización sin recargar la página.</p>
+                                        </div>
+                                        <i class="bi bi-chevron-right"></i>
+                                    </div>
+                                </a>
+                            </asp:Panel>
+
+                       
                             <asp:Panel ID="pnlCarritoCliente" runat="server" CssClass="col">
                                 <a class="menu-link" href="Carrito.aspx" aria-label="Mi carrito">
                                     <div class="d-flex align-items-center gap-3">
@@ -204,7 +243,7 @@
                                 </a>
                             </asp:Panel>
 
-                            
+                          
                             <asp:Panel ID="pnlInformacion" runat="server" CssClass="col">
                                 <a class="menu-link" href="Informacion.aspx" aria-label="Información del negocio">
                                     <div class="d-flex align-items-center gap-3">

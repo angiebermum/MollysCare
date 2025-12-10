@@ -1,9 +1,19 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="Carrito.aspx.cs" Inherits="MollysCare.Formularios.Carrito" %>
+﻿<%@ Page Language="C#" AutoEventWireup="true"
+    CodeBehind="SeguimientoEnvios.aspx.cs"
+    Inherits="MollysCare.Formularios.SeguimientoEnvios" %>
+
+<%
+    if (Session["Usuario"] == null ||
+        (Session["Rol"] ?? "").ToString().ToUpperInvariant() != "ADMIN")
+    {
+        Response.Redirect("Login.aspx");
+    }
+%>
 
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" lang="es">
 <head runat="server">
-    <title>Mi carrito - Molly's Care</title>
+    <title>Seguimiento de envíos - Molly's Care</title>
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet" />
@@ -31,11 +41,9 @@
             font-weight:700;
         }
 
-        .cart-wrapper{
-            max-width: 950px;
-        }
+        .envios-wrapper{ max-width: 950px; }
 
-        .cart-card{
+        .envios-card{
             background-color: var(--card-bg);
             backdrop-filter: blur(8px);
             border-radius: 1.25rem;
@@ -52,7 +60,7 @@
             letter-spacing:.5px;
         }
 
-        .cart-table{
+        .envios-table{
             font-weight:700;
             border: 2px solid #111827;
             border-radius: .75rem;
@@ -60,22 +68,14 @@
             background-color:#ffffff;
         }
 
-        .cart-table thead{
+        .envios-table thead{
             background-color: var(--pastel-sky);
         }
 
-        .cart-table th,
-        .cart-table td{
+        .envios-table th,
+        .envios-table td{
             border: 1px solid #111827 !important;
             vertical-align: middle;
-        }
-
-        .cart-total-box{
-            border-radius: .75rem;
-            border: 2px solid #111827;
-            background-color:#ffffff;
-            padding: .75rem 1rem;
-            font-weight:700;
         }
 
         .btn-primary{
@@ -97,13 +97,7 @@
             background-color:#f3f4f6;
         }
 
-        .btn-outline-danger{
-            border-radius:999px;
-            border:2px solid #b91c1c;
-            font-weight:700;
-        }
-
-        .cart-meta{
+        .envios-meta{
             font-size:.9rem;
             opacity:.8;
         }
@@ -111,8 +105,8 @@
 </head>
 <body>
     <form id="form1" runat="server">
-        <main class="container py-5 cart-wrapper">
-            <div class="card cart-card">
+        <main class="container py-5 envios-wrapper">
+            <div class="card envios-card">
                 <div class="card-body p-4 p-md-5">
 
                     <div class="d-flex align-items-center justify-content-between gap-3 mb-4">
@@ -120,54 +114,43 @@
                             <img src='<%= ResolveUrl("~/images/logo.png") %>' alt="Molly's Care" style="max-width:120px; height:auto;">
                             <div>
                                 <h1 class="h4 mb-1 brand-badge" style="font-size: 1.9rem;">Molly's Care</h1>
-                                <p class="mb-0">Mi carrito — Resumen de productos seleccionados.</p>
+                                <p class="mb-0">Gestión de envíos — Pedidos y estado de entrega.</p>
                             </div>
                         </div>
                     </div>
 
-                    <asp:Label ID="lblMensaje" runat="server" CssClass="cart-meta d-block mb-3"></asp:Label>
+                    <asp:Label ID="lblMensaje" runat="server"
+                               CssClass="envios-meta d-block mb-3"></asp:Label>
 
-                    <asp:GridView ID="gvCarrito" runat="server"
-                        CssClass="table table-sm cart-table"
-                        AutoGenerateColumns="False">
+                    <asp:GridView ID="gvEnvios" runat="server"
+                        CssClass="table table-sm envios-table"
+                        AutoGenerateColumns="False"
+                        OnRowCommand="gvEnvios_RowCommand">
                         <Columns>
-                            <asp:BoundField DataField="Nombre" HeaderText="Producto" />
-                            <asp:BoundField DataField="Categoria" HeaderText="Categoría" />
-                            <asp:BoundField DataField="Precio" HeaderText="Precio unitario"
+                            <asp:BoundField DataField="IdPedido" HeaderText="Pedido #" />
+                            <asp:BoundField DataField="Total" HeaderText="Total"
                                 DataFormatString="₡{0:N2}" HtmlEncode="False" />
-                            <asp:BoundField DataField="Cantidad" HeaderText="Cantidad" />
-                            <asp:BoundField DataField="Subtotal" HeaderText="Subtotal"
-                                DataFormatString="₡{0:N2}" HtmlEncode="False" />
+                            <asp:BoundField DataField="Estado" HeaderText="Estado del envío" />
+                            <asp:TemplateField HeaderText="Acciones">
+                                <ItemTemplate>
+                                    <asp:LinkButton ID="btnActualizar" runat="server"
+                                        CommandName="ActualizarEstado"
+                                        CommandArgument='<%# Eval("IdPedido") %>'
+                                        CssClass="btn btn-primary btn-sm">
+                                        Actualizar estado
+                                    </asp:LinkButton>
+                                </ItemTemplate>
+                            </asp:TemplateField>
                         </Columns>
                     </asp:GridView>
 
-                    <div class="mt-3 cart-total-box d-inline-flex align-items-center gap-2">
-                        <span>Total a pagar:</span>
-                        <asp:Label ID="lblTotal" runat="server" Text="₡0.00"></asp:Label>
-                    </div>
-
                     <div class="mt-3 d-flex flex-wrap gap-2">
-                        <asp:Button ID="btnVaciar" runat="server" Text="Vaciar carrito"
-                            CssClass="btn btn-outline-danger btn-sm"
-                            OnClick="btnVaciar_Click" />
-                        <a href="Productos.aspx" class="btn btn-outline-secondary btn-sm">
-                            <i class="bi bi-bag"></i> Volver al catálogo
+                        <a href="Carrito.aspx" class="btn btn-outline-secondary btn-sm">
+                            <i class="bi bi-cart-check"></i> Ir al carrito
                         </a>
                         <a href="Menu.aspx" class="btn btn-outline-secondary btn-sm">
                             <i class="bi bi-house-door"></i> Volver al menú
                         </a>
-
-                      
-                        <asp:Button ID="btnIrAPago" runat="server"
-                            Text="Ir a pago"
-                            CssClass="btn btn-primary btn-sm"
-                            OnClick="btnIrAPago_Click" />
-
-                      
-                        <asp:Button ID="btnConfirmarPedido" runat="server"
-                            Text="Confirmar pedido"
-                            CssClass="btn btn-primary btn-sm"
-                            OnClick="btnConfirmarPedido_Click" />
                     </div>
 
                 </div>
